@@ -12,11 +12,12 @@ set -e
 . ./config.sh
 
 _SEARCH=$1
-_PAGE=${2:-"1"}
+_PAGE=${2:-1}
 _COLUMN=${3:-"ic_dph"}
 
-curl -X GET --insecure -H "key: ${OAFS_KEY}" https://iz.opendata.financnasprava.sk/api/data/ds_dphs/search \
--G \
--d page=${_PAGE} \
--d column=${_COLUMN} \
--d search=${_SEARCH}
+./generator/generated/iz/client.sh \
+--host https://iz.opendata.financnasprava.sk/api/data \
+dataSlugSearchGet \
+'key:${OAFS_KEY}' \
+slug=ds_dphs page=${_PAGE} column=${_COLUMN} search=${_SEARCH}
+

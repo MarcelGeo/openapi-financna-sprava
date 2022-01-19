@@ -1,0 +1,195 @@
+openapi: "3.0.3"
+info:
+  title: OpenData FS Information Lists API
+  version: "1.0.0"
+  description: API Documentation for OpenData FS Information Lists API
+
+
+servers:
+  - url: https://iz.opendata.financnasprava.sk/api
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: key
+  schemas:
+    Lists:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/List'
+    List:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        url:
+          type: string
+        update_date:
+          type: string
+          format: datetime
+        searchable:
+          type: array
+          items:
+            type: string
+    Data:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+        pages:
+          type: integer
+        itemsCount:
+          type: integer
+        itemsPerPage:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /lists:
+    get:
+      summary: Available information lists
+      tags:
+        - Lists
+      responses:
+        '200':
+          description: Array of available lists
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Lists'
+
+  /lists/{slug}:
+    get:
+      summary: Information list
+      tags:
+        - Lists
+      parameters:
+        - name: slug
+          in: path
+          description: List Slug
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List specified by slug
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '400':
+          description: Invalid parameter slug
+        '404':
+          description: List not found
+
+  /data/{slug}:
+    get:
+      summary: Data in information list
+      tags:
+        - Data
+      parameters:
+        - name: slug
+          in: path
+          description: Data in list specified by slug
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: true
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Array of data in list
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Data'
+        '400':
+          description: |
+            Invalid parameter slug
+
+            Invalid query page
+
+        '404':
+          description: |
+            List not found
+
+            Page not found
+
+
+  /data/{slug}/search:
+    get:
+      summary: Search in information list
+      tags:
+        - Data
+      parameters:
+        - name: slug
+          in: path
+          description: List Slug
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: true
+          schema:
+            type: integer
+            default: 1
+        - name: column
+          in: query
+          description: Column
+          required: true
+          schema:
+            type: string
+        - name: search
+          in: query
+          description: Search
+          required: true
+          schema:
+            type: string
+            minimum: 5
+      responses:
+        '200':
+          description: Array of available lists
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/Data'
+        '400':
+          description: |
+            Invalid parameter slug
+
+            Invalid query page
+
+            Invalid query column
+
+            Invalid query search
+
+            Minimum search len is 5
+
+            Column is not searchable
+
+        '404':
+          description: |
+            List not found
+
+            Page not found
+
+            Search not found
