@@ -1,8 +1,8 @@
-# BASH implementacia pre open api financnej spravy
+# BASH implementácia pre open api finančnej správy
 
-Postupne sa bude rozsitovat funkcionalita. Aktuálne len ziskavame zoznam dostupnych registrov.
+Pre fungovanie je treba zaregistrovat sa a získať privátny kľúč na [stránke finančnej správy](https://opendata.financnasprava.sk/page/openapi).
 
-## Získanie aturizačného kľúča
+## Získanie autorizačného kľúča
 
 1. Na [stránke finančnej správy](https://opendata.financnasprava.sk/page/openapi) vyplníme kontaktné údaje
 2. Kľúč príde mailom
