@@ -7,7 +7,6 @@ print_help(){
   echo -e "-al/--available-lists - All lists in API"
   echo -e "-l/--list [slug] - Detail of list based on string slug"
   echo -e "-d/--data [slug] - Get data based on slug"
-  echo -e "-ds/--data-search [slug] - Searching in list based on slug"
   echo -e "-p/--page [page] - Page in large data (default is 1)"
   echo -e "-c/--column [column] - Searchable column"
   echo -e "-s/--search [term] - Searching term in selected -c/--column"
@@ -21,15 +20,6 @@ get_column=false
 get_search=false
 
 for param in "$@"; do
-
-  case $OPERATION in
-    "listsSlugGet")
-      SLUG=$param
-      continue
-      ;;
-    *)
-      ;;
-  esac
 
   if [[ "$get_slug" = true ]]; then
     SLUG=$param
@@ -62,16 +52,14 @@ for param in "$@"; do
       ;;
     -l|--list)
       OPERATION="listsSlugGet"
+      get_slug=true
       ;;
     -d|--data)
       OPERATION="dataSlugGet"
       get_slug=true
       ;;
-    -ds|--data-search)
-      OPERATION="dataSlugSearchGet"
-      get_slug=true
-      ;;
     -s|--search)
+      OPERATION="dataSlugSearchGet"
       get_search=true
       ;;
     -c|--column)
